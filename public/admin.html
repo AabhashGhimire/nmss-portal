@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Admin Panel | NMSS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -12,134 +13,189 @@
 <div class="flex min-h-screen">
 
   <!-- SIDEBAR -->
-  <aside class="w-64 bg-blue-800 text-white p-6">
-    <h2 class="font-bold text-lg mb-6">Admin Panel</h2>
+  <aside class="w-64 bg-blue-800 text-white p-6 space-y-6">
+    <h2 class="text-xl font-bold">NMSS Admin</h2>
+
     <nav class="space-y-3 text-sm">
-      <a href="#" class="block font-semibold">Members</a>
-      <a href="#" class="block">Teachers</a>
-      <a href="#" class="block">Notices</a>
-      <a href="#" class="block">Gallery</a>
-      <a href="#" class="block">Events</a>
-      <a href="#" class="block">Certificates</a>
+      <a href="#members" class="block hover:underline">Members</a>
+      <a href="#notices" class="block hover:underline">Announcements</a>
+      <a href="#events" class="block hover:underline">Events</a>
     </nav>
+
+    <button onclick="logout()"
+      class="mt-10 bg-red-600 w-full py-2 rounded text-sm">
+      Logout
+    </button>
   </aside>
 
   <!-- MAIN -->
-  <main class="flex-1 p-10 space-y-8">
+  <main class="flex-1 p-8 space-y-16 overflow-y-auto">
 
-    <h1 class="text-2xl font-bold">Members Management</h1>
+    <!-- MEMBERS -->
+    <section id="members">
+      <h2 class="text-2xl font-bold mb-4">Members</h2>
 
-    <!-- ADD MEMBER FORM -->
-    <div class="bg-white rounded-xl shadow p-6 max-w-xl">
-      <h2 class="text-lg font-semibold mb-4">Add Member</h2>
+      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
+        <input id="mName" placeholder="Name" class="w-full border px-3 py-2 mb-2">
+        <input id="mClass" placeholder="Class" class="w-full border px-3 py-2 mb-2">
+        <select id="mPosition" class="w-full border px-3 py-2 mb-3">
+          <option value="">Position</option>
+          <option>President</option>
+          <option>Vice-President</option>
+          <option>Secretary</option>
+          <option>Member</option>
+        </select>
+        <button onclick="addMember()"
+          class="bg-blue-700 text-white px-4 py-2 rounded">
+          Add Member
+        </button>
+      </div>
 
-      <input id="name" type="text" placeholder="Full name"
-        class="w-full border rounded px-4 py-2 mb-3">
+      <ul id="memberList" class="mt-4 space-y-2"></ul>
+    </section>
 
-      <input id="class" type="text" placeholder="Class (e.g. 10)"
-        class="w-full border rounded px-4 py-2 mb-3">
+    <!-- ANNOUNCEMENTS -->
+    <section id="notices">
+      <h2 class="text-2xl font-bold mb-4">Announcements</h2>
 
-      <select id="position"
-        class="w-full border rounded px-4 py-2 mb-4">
-        <option value="">Select position</option>
-        <option>President</option>
-        <option>Vice-President</option>
-        <option>Secretary</option>
-        <option>Member</option>
-      </select>
+      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
+        <input id="nTitle" placeholder="Title" class="w-full border px-3 py-2 mb-2">
+        <textarea id="nDesc" placeholder="Description"
+          class="w-full border px-3 py-2 mb-2"></textarea>
+        <input id="nDate" type="date" class="w-full border px-3 py-2 mb-3">
+        <button onclick="addNotice()"
+          class="bg-blue-700 text-white px-4 py-2 rounded">
+          Add Announcement
+        </button>
+      </div>
 
-      <button onclick="addMember()"
-        class="bg-blue-700 text-white px-4 py-2 rounded">
-        Add Member
-      </button>
+      <ul id="noticeList" class="mt-4 space-y-2"></ul>
+    </section>
 
-      <p id="msg" class="text-sm mt-3"></p>
-    </div>
+    <!-- EVENTS -->
+    <section id="events">
+      <h2 class="text-2xl font-bold mb-4">Events</h2>
 
-    <!-- MEMBERS LIST -->
-    <div class="bg-white rounded-xl shadow p-6">
-      <h2 class="text-lg font-semibold mb-4">Members List</h2>
+      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
+        <input id="eTitle" placeholder="Title" class="w-full border px-3 py-2 mb-2">
+        <textarea id="eDesc" placeholder="Description"
+          class="w-full border px-3 py-2 mb-2"></textarea>
+        <input id="eDate" type="date" class="w-full border px-3 py-2 mb-3">
+        <button onclick="addEvent()"
+          class="bg-blue-700 text-white px-4 py-2 rounded">
+          Add Event
+        </button>
+      </div>
 
-      <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="border px-3 py-2 text-left">Name</th>
-            <th class="border px-3 py-2">Class</th>
-            <th class="border px-3 py-2">Position</th>
-          </tr>
-        </thead>
-        <tbody id="membersTable"></tbody>
-      </table>
-    </div>
+      <ul id="eventList" class="mt-4 space-y-2"></ul>
+    </section>
 
   </main>
 </div>
 
-<!-- FIREBASE CORE -->
+<!-- FIREBASE -->
 <script type="module" src="js/firebase.js"></script>
 
 <!-- AUTH PROTECTION -->
 <script type="module">
-  import { onAuthStateChanged } from
+  import { onAuthStateChanged, signOut } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
   import { auth } from "./js/firebase.js";
+
+  window.logout = () => signOut(auth);
 
   onAuthStateChanged(auth, user => {
     if (!user) window.location.href = "login.html";
   });
 </script>
 
-<!-- MEMBERS LOGIC -->
+<!-- ADMIN LOGIC -->
 <script type="module">
   import { db } from "./js/firebase.js";
   import {
-    collection,
-    addDoc,
-    onSnapshot
+    collection, addDoc, deleteDoc, doc, onSnapshot
   } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+  /* MEMBERS */
   const membersRef = collection(db, "members");
-  const table = document.getElementById("membersTable");
-  const msg = document.getElementById("msg");
+  const memberList = document.getElementById("memberList");
 
-  window.addMember = async function () {
-    const name = document.getElementById("name").value.trim();
-    const cls = document.getElementById("class").value.trim();
-    const position = document.getElementById("position").value;
-
-    if (!name || !cls || !position) {
-      msg.textContent = "Fill all fields";
-      msg.className = "text-red-600";
-      return;
-    }
-
+  window.addMember = async () => {
     await addDoc(membersRef, {
-      name,
-      class: cls,
-      position
+      name: mName.value,
+      class: mClass.value,
+      position: mPosition.value
     });
-
-    msg.textContent = "Member added";
-    msg.className = "text-green-600";
-
-    document.getElementById("name").value = "";
-    document.getElementById("class").value = "";
-    document.getElementById("position").value = "";
+    mName.value = mClass.value = mPosition.value = "";
   };
 
-  onSnapshot(membersRef, snapshot => {
-    table.innerHTML = "";
-    snapshot.forEach(doc => {
-      const m = doc.data();
-      table.innerHTML += `
-        <tr>
-          <td class="border px-3 py-2">${m.name}</td>
-          <td class="border px-3 py-2 text-center">${m.class}</td>
-          <td class="border px-3 py-2 text-center">${m.position}</td>
-        </tr>
-      `;
+  onSnapshot(membersRef, snap => {
+    memberList.innerHTML = "";
+    snap.forEach(d => {
+      const m = d.data();
+      memberList.innerHTML += `
+        <li class="bg-white p-3 rounded shadow flex justify-between">
+          ${m.name} (${m.position})
+          <button onclick="deleteItem('members','${d.id}')"
+            class="text-red-600 text-sm">Delete</button>
+        </li>`;
     });
   });
+
+  /* NOTICES */
+  const noticesRef = collection(db, "notices");
+  const noticeList = document.getElementById("noticeList");
+
+  window.addNotice = async () => {
+    await addDoc(noticesRef, {
+      title: nTitle.value,
+      description: nDesc.value,
+      date: nDate.value
+    });
+    nTitle.value = nDesc.value = nDate.value = "";
+  };
+
+  onSnapshot(noticesRef, snap => {
+    noticeList.innerHTML = "";
+    snap.forEach(d => {
+      const n = d.data();
+      noticeList.innerHTML += `
+        <li class="bg-white p-3 rounded shadow flex justify-between">
+          ${n.title}
+          <button onclick="deleteItem('notices','${d.id}')"
+            class="text-red-600 text-sm">Delete</button>
+        </li>`;
+    });
+  });
+
+  /* EVENTS */
+  const eventsRef = collection(db, "events");
+  const eventList = document.getElementById("eventList");
+
+  window.addEvent = async () => {
+    await addDoc(eventsRef, {
+      title: eTitle.value,
+      description: eDesc.value,
+      date: eDate.value
+    });
+    eTitle.value = eDesc.value = eDate.value = "";
+  };
+
+  onSnapshot(eventsRef, snap => {
+    eventList.innerHTML = "";
+    snap.forEach(d => {
+      const e = d.data();
+      eventList.innerHTML += `
+        <li class="bg-white p-3 rounded shadow flex justify-between">
+          ${e.title}
+          <button onclick="deleteItem('events','${d.id}')"
+            class="text-red-600 text-sm">Delete</button>
+        </li>`;
+    });
+  });
+
+  window.deleteItem = async (col, id) =>
+    await deleteDoc(doc(db, col, id));
 </script>
 
 </body>
