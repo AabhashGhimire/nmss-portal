@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | NMSS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-xl shadow w-full max-w-sm">
+    <h2 class="text-2xl font-bold mb-6 text-center text-blue-800">
+      Admin Login
+    </h2>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Admin email"
+      class="w-full border rounded px-4 py-2 mb-4"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      class="w-full border rounded px-4 py-2 mb-4"
+    >
+
+    <button
+      onclick="login()"
+      class="w-full bg-blue-700 text-white py-2 rounded"
+    >
+      Login
+    </button>
+
+    <p id="error" class="text-red-500 text-sm mt-4 text-center"></p>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module" src="js/firebase.js"></script>
+
+  <!-- Login Logic -->
+  <script type="module">
+    import { signInWithEmailAndPassword } from
+      "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { auth } from "./js/firebase.js";
+
+    window.login = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "admin.html";
+        })
+        .catch(err => {
+          document.getElementById("error").innerText = err.message;
+        });
+    };
+  </script>
+
+</body>
+</html>
