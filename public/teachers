@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teachers | NMSS Science Club</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(90px);
+      opacity: 0.22;
+      z-index: 0;
+    }
+  </style>
+</head>
+
+<body class="relative overflow-hidden bg-white text-gray-800">
+
+<!-- BACKGROUND -->
+<div class="bg-shape w-96 h-96 bg-blue-300 top-[-120px] left-[-120px]"></div>
+<div class="bg-shape w-[520px] h-[520px] bg-indigo-300 top-[250px] right-[-250px]"></div>
+
+<!-- HEADER -->
+<header class="bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50 relative">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <div class="flex items-center gap-4">
+      <img src="assets/images/nmss-logo.png" class="w-12 h-12 object-contain" alt="NMSS Logo">
+      <div>
+        <h1 class="font-bold text-blue-800">NMSS</h1>
+        <p class="text-sm text-gray-500">Narayani Model Secondary School</p>
+      </div>
+    </div>
+
+    <nav class="hidden md:flex gap-6 text-sm font-medium">
+      <a href="about.html">About</a>
+      <a href="students.html">Members</a>
+      <a href="teachers.html" class="text-blue-700 font-semibold">Teachers</a>
+      <a href="announcements.html">Notice</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="certificates.html">Certificates</a>
+    </nav>
+  </div>
+</header>
+
+<!-- TITLE -->
+<section class="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-8">
+  <h2 class="text-4xl font-bold text-blue-800 mb-2">Teachers</h2>
+  <p class="text-gray-600">
+    Faculty members involved with the Science Club and academic guidance.
+  </p>
+</section>
+
+<!-- SEARCH & FILTER -->
+<section class="relative z-10 max-w-6xl mx-auto px-6 pb-6 flex flex-col md:flex-row gap-4">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search by name..."
+    class="border rounded-lg px-4 py-2 w-full md:w-1/2 focus:outline-blue-500"
+  >
+
+  <select
+    id="subjectFilter"
+    class="border rounded-lg px-4 py-2 w-full md:w-1/3 focus:outline-blue-500"
+  >
+    <option value="all">All Subjects</option>
+    <option value="Physics">Physics</option>
+    <option value="Chemistry">Chemistry</option>
+    <option value="Biology">Biology</option>
+    <option value="Science">Science</option>
+  </select>
+</section>
+
+<!-- TEACHERS GRID -->
+<main class="relative z-10 max-w-6xl mx-auto px-6 pb-28">
+  <div id="teachersGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+    <!-- TEACHER CARD -->
+    <div class="teacher-card bg-white rounded-xl shadow p-6 text-center"
+         data-name="Neerose Bastola"
+         data-subject="Science">
+      <img src="assets/images/profile-placeholder.png"
+           class="w-24 h-24 mx-auto rounded-full mb-4 object-cover">
+      <h3 class="font-semibold">Mr. Neerose Bastola</h3>
+      <p class="text-sm text-blue-700 font-medium">Science</p>
+      <p class="text-sm text-gray-500">HOD</p>
+    </div>
+
+    <div class="teacher-card bg-white rounded-xl shadow p-6 text-center"
+         data-name="Anita Sharma"
+         data-subject="Biology">
+      <img src="assets/images/profile-placeholder.png"
+           class="w-24 h-24 mx-auto rounded-full mb-4 object-cover">
+      <h3 class="font-semibold">Ms. Anita Sharma</h3>
+      <p class="text-sm text-blue-700 font-medium">Biology</p>
+      <p class="text-sm text-gray-500">Teacher</p>
+    </div>
+
+    <div class="teacher-card bg-white rounded-xl shadow p-6 text-center"
+         data-name="Ramesh Koirala"
+         data-subject="Physics">
+      <img src="assets/images/profile-placeholder.png"
+           class="w-24 h-24 mx-auto rounded-full mb-4 object-cover">
+      <h3 class="font-semibold">Mr. Ramesh Koirala</h3>
+      <p class="text-sm text-blue-700 font-medium">Physics</p>
+      <p class="text-sm text-gray-500">Teacher</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="relative z-10 text-center py-6 text-sm text-gray-400">
+  © 2025 Narayani Model Secondary School
+</footer>
+
+<!-- SEARCH & FILTER SCRIPT -->
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const subjectFilter = document.getElementById("subjectFilter");
+  const cards = document.querySelectorAll(".teacher-card");
+
+  function filterTeachers() {
+    const searchText = searchInput.value.toLowerCase();
+    const selectedSubject = subjectFilter.value;
+
+    cards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const subject = card.dataset.subject;
+
+      const matchName = name.includes(searchText);
+      const matchSubject = selectedSubject === "all" || subject === selectedSubject;
+
+      card.style.display = (matchName && matchSubject) ? "block" : "none";
+    });
+  }
+
+  searchInput.addEventListener("input", filterTeachers);
+  subjectFilter.addEventListener("change", filterTeachers);
+</script>
+
+</body>
+</html>
