@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>Admin Panel | NMSS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -17,44 +15,130 @@
   <aside class="w-64 bg-blue-800 text-white p-6">
     <h2 class="font-bold text-lg mb-6">Admin Panel</h2>
     <nav class="space-y-3 text-sm">
-      <a href="#" class="block hover:underline">Members</a>
-      <a href="#" class="block hover:underline">Teachers</a>
-      <a href="#" class="block hover:underline">Notices</a>
-      <a href="#" class="block hover:underline">Gallery</a>
-      <a href="#" class="block hover:underline">Events</a>
-      <a href="#" class="block hover:underline">Certificates</a>
+      <a href="#" class="block font-semibold">Members</a>
+      <a href="#" class="block">Teachers</a>
+      <a href="#" class="block">Notices</a>
+      <a href="#" class="block">Gallery</a>
+      <a href="#" class="block">Events</a>
+      <a href="#" class="block">Certificates</a>
     </nav>
   </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 p-10">
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+  <!-- MAIN -->
+  <main class="flex-1 p-10 space-y-8">
 
-    <div class="bg-white rounded-xl shadow p-6">
-      <p class="text-gray-600">
-        Welcome to the admin panel.  
-        From here, you can manage members, teachers, notices, events,
-        gallery images, and certificates.
-      </p>
+    <h1 class="text-2xl font-bold">Members Management</h1>
+
+    <!-- ADD MEMBER FORM -->
+    <div class="bg-white rounded-xl shadow p-6 max-w-xl">
+      <h2 class="text-lg font-semibold mb-4">Add Member</h2>
+
+      <input id="name" type="text" placeholder="Full name"
+        class="w-full border rounded px-4 py-2 mb-3">
+
+      <input id="class" type="text" placeholder="Class (e.g. 10)"
+        class="w-full border rounded px-4 py-2 mb-3">
+
+      <select id="position"
+        class="w-full border rounded px-4 py-2 mb-4">
+        <option value="">Select position</option>
+        <option>President</option>
+        <option>Vice-President</option>
+        <option>Secretary</option>
+        <option>Member</option>
+      </select>
+
+      <button onclick="addMember()"
+        class="bg-blue-700 text-white px-4 py-2 rounded">
+        Add Member
+      </button>
+
+      <p id="msg" class="text-sm mt-3"></p>
     </div>
-  </main>
 
+    <!-- MEMBERS LIST -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-semibold mb-4">Members List</h2>
+
+      <table class="w-full text-sm border">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border px-3 py-2 text-left">Name</th>
+            <th class="border px-3 py-2">Class</th>
+            <th class="border px-3 py-2">Position</th>
+          </tr>
+        </thead>
+        <tbody id="membersTable"></tbody>
+      </table>
+    </div>
+
+  </main>
 </div>
 
-<!-- 🔹 FIREBASE CORE -->
+<!-- FIREBASE CORE -->
 <script type="module" src="js/firebase.js"></script>
 
-<!-- 🔐 AUTH PROTECTION -->
+<!-- AUTH PROTECTION -->
 <script type="module">
   import { onAuthStateChanged } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
   import { auth } from "./js/firebase.js";
 
   onAuthStateChanged(auth, user => {
-    if (!user) {
-      // Not logged in → go to login page
-      window.location.href = "login.html";
+    if (!user) window.location.href = "login.html";
+  });
+</script>
+
+<!-- MEMBERS LOGIC -->
+<script type="module">
+  import { db } from "./js/firebase.js";
+  import {
+    collection,
+    addDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const membersRef = collection(db, "members");
+  const table = document.getElementById("membersTable");
+  const msg = document.getElementById("msg");
+
+  window.addMember = async function () {
+    const name = document.getElementById("name").value.trim();
+    const cls = document.getElementById("class").value.trim();
+    const position = document.getElementById("position").value;
+
+    if (!name || !cls || !position) {
+      msg.textContent = "Fill all fields";
+      msg.className = "text-red-600";
+      return;
     }
+
+    await addDoc(membersRef, {
+      name,
+      class: cls,
+      position
+    });
+
+    msg.textContent = "Member added";
+    msg.className = "text-green-600";
+
+    document.getElementById("name").value = "";
+    document.getElementById("class").value = "";
+    document.getElementById("position").value = "";
+  };
+
+  onSnapshot(membersRef, snapshot => {
+    table.innerHTML = "";
+    snapshot.forEach(doc => {
+      const m = doc.data();
+      table.innerHTML += `
+        <tr>
+          <td class="border px-3 py-2">${m.name}</td>
+          <td class="border px-3 py-2 text-center">${m.class}</td>
+          <td class="border px-3 py-2 text-center">${m.position}</td>
+        </tr>
+      `;
+    });
   });
 </script>
 
