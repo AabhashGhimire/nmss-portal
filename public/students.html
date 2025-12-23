@@ -5,144 +5,117 @@
   <title>Members | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .bg-shape {
-      position: absolute;
-      border-radius: 9999px;
-      filter: blur(90px);
-      opacity: 0.22;
-      z-index: 0;
-    }
-  </style>
 </head>
 
-<body class="relative overflow-hidden bg-white text-gray-800">
+<body class="bg-white text-gray-800">
 
-<!-- BACKGROUND -->
-<div class="bg-shape w-96 h-96 bg-blue-300 top-[-120px] left-[-120px]"></div>
-<div class="bg-shape w-[520px] h-[520px] bg-indigo-300 top-[250px] right-[-250px]"></div>
-
-<!-- HEADER (same as others) -->
-<header class="bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50 relative">
+<!-- HEADER -->
+<header class="bg-white shadow-sm sticky top-0 z-40">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
-    <div class="flex items-center gap-4">
-      <img src="assets/images/nmss-logo.png" class="w-12 h-12" alt="NMSS Logo">
-      <div>
-        <h1 class="font-bold text-blue-800">NMSS</h1>
-        <p class="text-sm text-gray-500">Narayani Model Secondary School</p>
-      </div>
-    </div>
-
-    <nav class="hidden md:flex gap-6 text-sm font-medium">
-      <a href="about.html">About</a>
-      <a href="students.html" class="text-blue-700 font-semibold">Members</a>
-      <a href="teachers.html">Teachers</a>
-      <a href="announcements.html">Notice</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="events.html">Events</a>
-      <a href="certificates.html">Certificates</a>
-    </nav>
+    <h1 class="font-bold text-blue-800">NMSS Members</h1>
+    <a href="index.html" class="text-sm text-blue-700">Home</a>
   </div>
 </header>
 
 <!-- TITLE -->
-<section class="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-10">
-  <h2 class="text-4xl font-bold text-blue-800 mb-2">Members</h2>
-  <p class="text-gray-600">Search and filter Science Club members.</p>
+<section class="max-w-6xl mx-auto px-6 pt-16 pb-6">
+  <h2 class="text-3xl font-bold text-blue-800 mb-2">
+    Science Club Members
+  </h2>
+  <p class="text-gray-600">
+    Search and filter members of the NMSS Science Club.
+  </p>
 </section>
 
 <!-- SEARCH & FILTER -->
-<section class="relative z-10 max-w-6xl mx-auto px-6 pb-6 flex flex-col md:flex-row gap-4">
+<section class="max-w-6xl mx-auto px-6 pb-6 flex flex-col md:flex-row gap-4">
   <input
     type="text"
     id="searchInput"
     placeholder="Search by name..."
-    class="border rounded-lg px-4 py-2 w-full md:w-1/2 focus:outline-blue-500"
+    class="border rounded-lg px-4 py-2 w-full md:w-1/2"
   >
 
   <select
     id="roleFilter"
-    class="border rounded-lg px-4 py-2 w-full md:w-1/3 focus:outline-blue-500"
+    class="border rounded-lg px-4 py-2 w-full md:w-1/3"
   >
     <option value="all">All Positions</option>
-    <option value="President">President</option>
-    <option value="Vice President">Vice-President</option>
-    <option value="Secretary">Secretary</option>
-    <option value="Member">Member</option>
+    <option>President</option>
+    <option>Vice-President</option>
+    <option>Secretary</option>
+    <option>Member</option>
   </select>
 </section>
 
 <!-- MEMBERS GRID -->
-<main class="relative z-10 max-w-6xl mx-auto px-6 pb-28">
-  <div id="membersGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
-    <!-- MEMBER CARD TEMPLATE -->
-    <div class="member-card bg-white rounded-xl shadow p-6 text-center"
-         data-name="Aarav Sharma"
-         data-role="President">
-      <img src="assets/images/profile-placeholder.png" class="w-24 h-24 mx-auto rounded-full mb-4">
-      <h3 class="font-semibold">Aarav Sharma</h3>
-      <p class="text-sm text-blue-700 font-medium">President</p>
-      <p class="text-sm text-gray-500">Class 11</p>
-    </div>
-
-    <div class="member-card bg-white rounded-xl shadow p-6 text-center"
-         data-name="Sita Karki"
-         data-role="Vice President">
-      <img src="assets/images/profile-placeholder.png" class="w-24 h-24 mx-auto rounded-full mb-4">
-      <h3 class="font-semibold">Sita Karki</h3>
-      <p class="text-sm text-blue-700 font-medium">Vice President</p>
-      <p class="text-sm text-gray-500">Class 10</p>
-    </div>
-
-    <div class="member-card bg-white rounded-xl shadow p-6 text-center"
-         data-name="Ramesh Thapa"
-         data-role="Member">
-      <img src="assets/images/profile-placeholder.png" class="w-24 h-24 mx-auto rounded-full mb-4">
-      <h3 class="font-semibold">Ramesh Thapa</h3>
-      <p class="text-sm text-blue-700 font-medium">Member</p>
-      <p class="text-sm text-gray-500">Class 9</p>
-    </div>
-
+<main class="max-w-6xl mx-auto px-6 pb-20">
+  <div
+    id="membersGrid"
+    class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="relative z-10 text-center py-6 text-sm text-gray-400">
-  © 2025 Narayani Model Secondary School
-</footer>
+<!-- FIREBASE -->
+<script type="module" src="js/firebase.js"></script>
 
-<!-- SEARCH & FILTER LOGIC -->
-<script>
+<!-- MEMBERS FETCH + FILTER -->
+<script type="module">
+  import { db } from "./js/firebase.js";
+  import {
+    collection,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const grid = document.getElementById("membersGrid");
   const searchInput = document.getElementById("searchInput");
   const roleFilter = document.getElementById("roleFilter");
-  const cards = document.querySelectorAll(".member-card");
 
-  function filterMembers() {
-    const searchText = searchInput.value.toLowerCase();
-    const selectedRole = roleFilter.value;
+  let members = [];
 
-    cards.forEach(card => {
-      const name = card.dataset.name.toLowerCase();
-      const role = card.dataset.role;
-
-      const matchName = name.includes(searchText);
-      const matchRole = selectedRole === "all" || role === selectedRole;
-
-      card.style.display = (matchName && matchRole) ? "block" : "none";
+  // Load members from Firestore
+  const membersRef = collection(db, "members");
+  onSnapshot(membersRef, snapshot => {
+    members = [];
+    snapshot.forEach(doc => {
+      members.push(doc.data());
     });
+    renderMembers();
+  });
+
+  function renderMembers() {
+    const search = searchInput.value.toLowerCase();
+    const role = roleFilter.value;
+
+    grid.innerHTML = "";
+
+    members
+      .filter(m =>
+        m.name.toLowerCase().includes(search) &&
+        (role === "all" || m.position === role)
+      )
+      .forEach(m => {
+        grid.innerHTML += `
+          <div class="bg-white shadow rounded-xl p-6 text-center">
+            <h3 class="font-semibold text-lg">${m.name}</h3>
+            <p class="text-sm text-blue-700 font-medium">${m.position}</p>
+            <p class="text-sm text-gray-500">Class ${m.class}</p>
+          </div>
+        `;
+      });
+
+    if (grid.innerHTML === "") {
+      grid.innerHTML = `
+        <p class="text-gray-500 col-span-full text-center">
+          No members found.
+        </p>
+      `;
+    }
   }
 
-  searchInput.addEventListener("input", filterMembers);
-  roleFilter.addEventListener("change", filterMembers);
+  searchInput.addEventListener("input", renderMembers);
+  roleFilter.addEventListener("change", renderMembers);
 </script>
 
 </body>
