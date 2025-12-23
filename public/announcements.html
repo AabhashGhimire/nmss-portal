@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notices | NMSS Science Club</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(90px);
+      opacity: 0.22;
+      z-index: 0;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="relative overflow-hidden bg-white text-gray-800">
+
+<!-- BACKGROUND -->
+<div class="bg-shape w-96 h-96 bg-blue-300 top-[-120px] left-[-120px]"></div>
+<div class="bg-shape w-[520px] h-[520px] bg-indigo-300 top-[250px] right-[-250px]"></div>
+
+<!-- HEADER -->
+<header class="bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50 relative">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <div class="flex items-center gap-4">
+      <img src="assets/images/nmss-logo.png" class="w-12 h-12 object-contain" alt="NMSS Logo">
+      <div>
+        <h1 class="font-bold text-blue-800">NMSS</h1>
+        <p class="text-sm text-gray-500">Narayani Model Secondary School</p>
+      </div>
+    </div>
+
+    <nav class="hidden md:flex gap-6 text-sm font-medium">
+      <a href="about.html">About</a>
+      <a href="students.html">Members</a>
+      <a href="teachers.html">Teachers</a>
+      <a href="announcements.html" class="text-blue-700 font-semibold">Notice</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="certificates.html">Certificates</a>
+    </nav>
+  </div>
+</header>
+
+<!-- TITLE -->
+<section class="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-10 fade-up">
+  <h2 class="text-4xl font-bold text-blue-800 mb-2">Notices & Announcements</h2>
+  <p class="text-gray-600">
+    Official notices and updates from the NMSS Science Club.
+  </p>
+</section>
+
+<!-- NOTICES LIST -->
+<main class="relative z-10 max-w-5xl mx-auto px-6 pb-28 space-y-6">
+
+  <!-- NOTICE CARD -->
+  <div class="bg-white rounded-xl shadow p-6 fade-up">
+    <p class="text-sm text-blue-700 font-semibold mb-1">
+      2025-01-15
+    </p>
+    <h3 class="text-lg font-semibold mb-2">
+      Science Exhibition Registration Open
+    </h3>
+    <p class="text-gray-700 leading-relaxed">
+      Students interested in participating in the annual science exhibition
+      are requested to register their names with the Science Club by the end
+      of this week.
+    </p>
+  </div>
+
+  <!-- COPY THIS BLOCK FOR MORE -->
+  <div class="bg-white rounded-xl shadow p-6 fade-up">
+    <p class="text-sm text-blue-700 font-semibold mb-1">
+      2025-01-05
+    </p>
+    <h3 class="text-lg font-semibold mb-2">
+      Weekly Science Club Meeting
+    </h3>
+    <p class="text-gray-700 leading-relaxed">
+      A regular meeting of the Science Club will be held on Friday after school.
+      All members are requested to be present.
+    </p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="relative z-10 text-center py-6 text-sm text-gray-400">
+  © 2025 Narayani Model Secondary School
+</footer>
+
+</body>
+</html>
