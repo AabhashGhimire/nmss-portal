@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About | NMSS Science Club</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(90px);
+      opacity: 0.22;
+      z-index: 0;
+    }
+  </style>
+</head>
+
+<body class="relative overflow-hidden bg-white text-gray-800">
+
+<!-- BACKGROUND SHAPES -->
+<div class="bg-shape w-96 h-96 bg-blue-300 top-[-120px] left-[-120px]"></div>
+<div class="bg-shape w-[520px] h-[520px] bg-indigo-300 top-[250px] right-[-250px]"></div>
+<div class="bg-shape w-96 h-96 bg-sky-200 bottom-[-150px] left-[30%]"></div>
+
+<!-- HEADER -->
+<header class="bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50 relative">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <div class="flex items-center gap-4">
+      <img src="assets/images/nmss-logo.png" class="w-12 h-12 object-contain" alt="NMSS Logo">
+      <div>
+        <h1 class="font-bold text-blue-800">NMSS</h1>
+        <p class="text-sm text-gray-500">Narayani Model Secondary School</p>
+      </div>
+    </div>
+
+    <button onclick="toggleMenu()" class="md:hidden">
+      <div class="space-y-1">
+        <span class="block w-6 h-0.5 bg-blue-800"></span>
+        <span class="block w-6 h-0.5 bg-blue-800"></span>
+        <span class="block w-6 h-0.5 bg-blue-800"></span>
+      </div>
+    </button>
+
+    <nav class="hidden md:flex gap-6 text-sm font-medium">
+      <a href="about.html" class="text-blue-700 font-semibold">About</a>
+      <a href="students.html" class="hover:text-blue-700">Members</a>
+      <a href="teachers.html" class="hover:text-blue-700">Teachers</a>
+      <a href="announcements.html" class="hover:text-blue-700">Notice</a>
+      <a href="gallery.html" class="hover:text-blue-700">Gallery</a>
+      <a href="events.html" class="hover:text-blue-700">Events</a>
+      <a href="certificates.html" class="hover:text-blue-700">Certificates</a>
+    </nav>
+  </div>
+
+  <div id="menu" class="hidden md:hidden border-t bg-white px-6 py-4">
+    <nav class="flex flex-col gap-3 text-sm">
+      <a href="about.html">About</a>
+      <a href="students.html">Members</a>
+      <a href="teachers.html">Teachers</a>
+      <a href="announcements.html">Notice</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="certificates.html">Certificates</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-20 text-center fade-up">
+  <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">
+    About the Science Club
+  </h2>
+  <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+    A space where students learn to think, question, and grow through science.
+  </p>
+</section>
+
+<!-- CONTENT SECTIONS -->
+<main class="relative z-10 max-w-4xl mx-auto px-6 space-y-20 pb-28">
+
+  <!-- SECTION 1 -->
+  <section class="fade-up">
+    <h3 class="text-2xl font-semibold text-blue-800 mb-4">Who we are</h3>
+    <p class="text-gray-700 leading-relaxed">
+      The NMSS Science Club is an academic initiative of Narayani Model Secondary School.
+      It exists to support students beyond textbooks by encouraging curiosity,
+      logical thinking, and a deeper understanding of scientific concepts.
+    </p>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="fade-up">
+    <h3 class="text-2xl font-semibold text-blue-800 mb-4">What we do</h3>
+    <p class="text-gray-700 leading-relaxed">
+      The club organizes activities, events, exhibitions, and discussions
+      that allow students to explore science in a practical and engaging way.
+      Students are encouraged to ask questions, test ideas,
+      and learn through observation and experimentation.
+    </p>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="fade-up">
+    <h3 class="text-2xl font-semibold text-blue-800 mb-4">Why this platform exists</h3>
+    <p class="text-gray-700 leading-relaxed">
+      This digital platform was created to bring all Science Club information
+      into one place. Here, students and teachers can find notices, events,
+      learning resources, certificates, and updates related to club activities,
+      making communication clear and accessible.
+    </p>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="fade-up">
+    <h3 class="text-2xl font-semibold text-blue-800 mb-4">Our focus</h3>
+    <p class="text-gray-700 leading-relaxed">
+      The Science Club focuses on student growth, discipline, and inclusive learning.
+      Every student is welcome to participate, explore new ideas,
+      and develop confidence in scientific thinking at their own pace.
+    </p>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="relative z-10 text-center py-6 text-sm text-gray-400">
+  © 2025 Narayani Model Secondary School
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  function toggleMenu() {
+    document.getElementById("menu").classList.toggle("hidden");
+  }
+</script>
+
+</body>
+                                                                     </html>
