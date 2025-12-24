@@ -2,39 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Teachers | NMSS</title>
+  <title>Teachers | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-slate-50">
+<body class="bg-slate-50 text-gray-800">
 
-<header class="bg-white shadow px-6 py-4">
-  <h1 class="text-xl font-bold text-blue-800">NMSS Teachers</h1>
+<!-- HEADER -->
+<header class="bg-white shadow sticky top-0 z-50">
+  <div class="max-w-5xl mx-auto px-4 py-4">
+    <h1 class="text-xl font-bold text-blue-800">Teachers</h1>
+  </div>
 </header>
 
-<main class="max-w-6xl mx-auto px-6 py-10">
-  <div id="teachersGrid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+<!-- TEACHERS LIST -->
+<main
+  class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+  id="teachersList"
+>
+  <p class="text-gray-500 col-span-full">Loading teachers...</p>
 </main>
 
-<script type="module" src="JS/firebase.js"></script>
+<!-- FIREBASE -->
+<script type="module" src="js/firebase.js"></script>
 
 <script type="module">
   import { db } from "./js/firebase.js";
-  import { collection, onSnapshot } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import {
+    collection,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  const grid = document.getElementById("teachersGrid");
+  const container = document.getElementById("teachersList");
 
-  onSnapshot(collection(db, "teachers"), snap => {
-    grid.innerHTML = "";
-    snap.forEach(doc => {
+  onSnapshot(collection(db, "teachers"), snapshot => {
+    container.innerHTML = "";
+
+    if (snapshot.empty) {
+      container.innerHTML = `
+        <p class="text-gray-500 col-span-full text-center">
+          No teachers added yet.
+        </p>
+      `;
+      return;
+    }
+
+    snapshot.forEach(doc => {
       const t = doc.data();
-      grid.innerHTML += `
-        <div class="bg-white rounded-xl shadow p-6 text-center">
-          <h3 class="font-semibold text-lg">${t.name}</h3>
-          <p class="text-blue-700">${t.subject}</p>
-          <p class="text-sm text-gray-500">${t.post}</p>
+
+      container.innerHTML += `
+        <div class="bg-white rounded-xl shadow p-5 text-center">
+          <h3 class="font-semibold text-lg">
+            ${t.name || "Teacher"}
+          </h3>
+          <p class="text-blue-700 text-sm font-medium">
+            ${t.subject || ""}
+          </p>
+          <p class="text-gray-500 text-sm">
+            ${t.post || ""}
+          </p>
         </div>
       `;
     });
