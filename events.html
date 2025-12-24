@@ -22,13 +22,7 @@
     </div>
 
     <!-- HAMBURGER -->
-    <button
-      onclick="toggleMenu()"
-      class="md:hidden text-2xl font-bold"
-      aria-label="Menu"
-    >
-      ☰
-    </button>
+    <button onclick="toggleMenu()" class="md:hidden text-2xl">☰</button>
 
     <!-- DESKTOP MENU -->
     <nav class="hidden md:flex gap-5 text-sm font-medium">
@@ -56,24 +50,31 @@
   </div>
 </header>
 
-<!-- TITLE -->
-<section class="max-w-5xl mx-auto px-4 pt-10 pb-4">
-  <h1 class="text-3xl font-bold text-blue-800 mb-2">Events</h1>
+<!-- PAGE TITLE (padding fixes scroll overlap) -->
+<section class="max-w-5xl mx-auto px-4 pt-[100px] pb-4">
+  <h1 class="text-3xl font-bold text-blue-800 mb-2">
+    Events
+  </h1>
   <p class="text-gray-600">
     Upcoming and past events organized by the NMSS Science Club.
   </p>
 </section>
 
 <!-- EVENTS LIST -->
-<main class="max-w-5xl mx-auto px-4 pb-16 space-y-4" id="eventsList">
-  <p class="text-gray-500">Loading events...</p>
+<main
+  id="eventsList"
+  class="max-w-5xl mx-auto px-4 pb-20 space-y-4"
+>
+  <p class="text-gray-500 text-center">
+    Loading events...
+  </p>
 </main>
 
 <!-- FIREBASE -->
-<script type="module" src="JS/firebase.js"></script>
+<script type="module" src="js/firebase.js"></script>
 
 <script type="module">
-  import { db } from "./JS/firebase.js";
+  import { db } from "./js/firebase.js";
   import { collection, onSnapshot } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
@@ -86,13 +87,15 @@
       list.innerHTML = `
         <p class="text-gray-500 text-center">
           No events available.
-        </p>`;
+        </p>
+      `;
       return;
     }
 
     snapshot.forEach(doc => {
       const e = doc.data();
 
+      // NEW badge (24 hours)
       let isNew = false;
       if (e.createdAt && e.createdAt.toMillis) {
         isNew = Date.now() - e.createdAt.toMillis() < 86400000;
@@ -117,7 +120,7 @@
     });
   });
 
-  /* HAMBURGER FUNCTION */
+  // Hamburger toggle
   function toggleMenu() {
     document.getElementById("menu").classList.toggle("hidden");
   }
