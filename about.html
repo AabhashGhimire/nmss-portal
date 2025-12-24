@@ -46,15 +46,18 @@
 <div class="bg-shape w-[520px] h-[520px] bg-indigo-300 top-[250px] right-[-250px]"></div>
 <div class="bg-shape w-96 h-96 bg-sky-200 bottom-[-150px] left-[30%]"></div>
 
-<!-- HEADER -->
-<header class="bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<!-- HEADER (FIXED & SAFE) -->
+<header class="bg-white shadow-sm sticky top-0 z-50 h-[76px]">
+  <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
 
-    <div class="flex items-center gap-4">
+    <!-- LOGO -->
+    <div class="flex items-center gap-4 h-[48px]">
       <img src="assets/images/nmss-logo.png" class="w-12 h-12 object-contain" alt="NMSS Logo">
       <div>
-        <h1 class="font-bold text-blue-800">NMSS</h1>
-        <p class="text-sm text-gray-500">Narayani Model Secondary School</p>
+        <h1 class="font-bold text-blue-800 leading-tight">NMSS</h1>
+        <p class="text-sm text-gray-500 leading-tight">
+          Narayani Model Secondary School
+        </p>
       </div>
     </div>
 
@@ -70,12 +73,12 @@
     <!-- DESKTOP MENU -->
     <nav class="hidden md:flex gap-6 text-sm font-medium">
       <a href="about.html" class="text-blue-700 font-semibold">About</a>
-      <a href="students.html">Members</a>
-      <a href="teachers.html">Teachers</a>
-      <a href="announcements.html">Notice</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="events.html">Events</a>
-      <a href="certificates.html">Certificates</a>
+      <a href="students.html" class="hover:text-blue-700">Members</a>
+      <a href="teachers.html" class="hover:text-blue-700">Teachers</a>
+      <a href="announcements.html" class="hover:text-blue-700">Notice</a>
+      <a href="gallery.html" class="hover:text-blue-700">Gallery</a>
+      <a href="events.html" class="hover:text-blue-700">Events</a>
+      <a href="certificates.html" class="hover:text-blue-700">Certificates</a>
     </nav>
   </div>
 
@@ -93,11 +96,8 @@
   </div>
 </header>
 
-<!-- 🔑 SPACER FIX (THIS SOLVES YOUR ISSUE) -->
-<div class="h-20"></div>
-
-<!-- HERO -->
-<section class="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20 text-center fade-up">
+<!-- HERO (OFFSET FIX) -->
+<section class="relative z-10 max-w-5xl mx-auto px-6 pt-[120px] pb-20 text-center fade-up">
   <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">
     About the Science Club
   </h2>
@@ -113,32 +113,34 @@
     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Who we are</h3>
     <p class="text-gray-700 leading-relaxed">
       The NMSS Science Club is an academic initiative of Narayani Model Secondary School.
-      It supports students beyond textbooks by encouraging curiosity, logical thinking,
-      and a deeper understanding of scientific concepts.
+      It exists to support students beyond textbooks by encouraging curiosity,
+      logical thinking, and a deeper understanding of scientific concepts.
     </p>
   </section>
 
   <section class="fade-up">
     <h3 class="text-2xl font-semibold text-blue-800 mb-4">What we do</h3>
     <p class="text-gray-700 leading-relaxed">
-      The club organizes activities, events, exhibitions, and discussions that allow
-      students to explore science in a practical and engaging way.
+      The club organizes activities, events, exhibitions, and discussions
+      that allow students to explore science in a practical and engaging way.
+      Students are encouraged to ask questions, test ideas,
+      and learn through observation and experimentation.
     </p>
   </section>
 
   <section class="fade-up">
     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Why this platform exists</h3>
     <p class="text-gray-700 leading-relaxed">
-      This platform brings notices, events, certificates, and updates into one place
-      for easy access and clear communication.
+      This digital platform was created to bring all Science Club information
+      into one place, making communication clear and accessible.
     </p>
   </section>
 
   <section class="fade-up">
     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Our focus</h3>
     <p class="text-gray-700 leading-relaxed">
-      We focus on inclusive learning, student growth, and building confidence
-      in scientific thinking.
+      The Science Club focuses on student growth, discipline, and inclusive learning.
+      Every student is welcome to participate and explore ideas confidently.
     </p>
   </section>
 
@@ -149,6 +151,7 @@
   © 2025 Narayani Model Secondary School
 </footer>
 
+<!-- SCRIPT -->
 <script>
   function toggleMenu() {
     document.getElementById("menu").classList.toggle("hidden");
