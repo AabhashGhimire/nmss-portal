@@ -1,93 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Admin Panel | NMSS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
 
+<!-- TOP BAR (MOBILE) -->
+<header class="md:hidden bg-blue-800 text-white flex items-center justify-between px-4 py-3">
+  <span class="font-semibold">NMSS Admin</span>
+  <button onclick="toggleSidebar()" class="text-2xl">☰</button>
+</header>
+
 <div class="flex min-h-screen">
 
   <!-- SIDEBAR -->
-  <aside class="w-64 bg-blue-800 text-white p-6 space-y-6">
-    <h2 class="text-xl font-bold">NMSS Admin</h2>
+  <aside
+    id="sidebar"
+    class="fixed md:static inset-y-0 left-0 w-64 bg-blue-800 text-white p-6
+           transform -translate-x-full md:translate-x-0 transition-transform duration-200 z-50"
+  >
+    <h2 class="font-bold text-lg mb-6">NMSS Admin</h2>
 
-    <nav class="space-y-3 text-sm">
+    <nav class="space-y-4 text-sm">
       <a href="#members" class="block hover:underline">Members</a>
-      <a href="#notices" class="block hover:underline">Announcements</a>
+      <a href="#announcements" class="block hover:underline">Announcements</a>
       <a href="#events" class="block hover:underline">Events</a>
     </nav>
 
-    <button onclick="logout()"
-      class="mt-10 bg-red-600 w-full py-2 rounded text-sm">
+    <button
+      onclick="logout()"
+      class="mt-10 w-full bg-red-600 hover:bg-red-700 py-2 rounded"
+    >
       Logout
     </button>
   </aside>
 
-  <!-- MAIN -->
-  <main class="flex-1 p-8 space-y-16 overflow-y-auto">
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-6 md:p-10 md:ml-0">
 
     <!-- MEMBERS -->
-    <section id="members">
-      <h2 class="text-2xl font-bold mb-4">Members</h2>
+    <section id="members" class="mb-12">
+      <h2 class="text-xl font-bold mb-4">Members</h2>
 
-      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
-        <input id="mName" placeholder="Name" class="w-full border px-3 py-2 mb-2">
-        <input id="mClass" placeholder="Class" class="w-full border px-3 py-2 mb-2">
-        <select id="mPosition" class="w-full border px-3 py-2 mb-3">
-          <option value="">Position</option>
-          <option>President</option>
-          <option>Vice-President</option>
-          <option>Secretary</option>
-          <option>Member</option>
-        </select>
-        <button onclick="addMember()"
-          class="bg-blue-700 text-white px-4 py-2 rounded">
+      <div class="bg-white p-4 rounded shadow max-w-md">
+        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Name" />
+        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Role" />
+        <button class="w-full bg-blue-600 text-white py-2 rounded">
           Add Member
         </button>
       </div>
-
-      <ul id="memberList" class="mt-4 space-y-2"></ul>
     </section>
 
     <!-- ANNOUNCEMENTS -->
-    <section id="notices">
-      <h2 class="text-2xl font-bold mb-4">Announcements</h2>
+    <section id="announcements" class="mb-12">
+      <h2 class="text-xl font-bold mb-4">Announcements</h2>
 
-      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
-        <input id="nTitle" placeholder="Title" class="w-full border px-3 py-2 mb-2">
-        <textarea id="nDesc" placeholder="Description"
-          class="w-full border px-3 py-2 mb-2"></textarea>
-        <input id="nDate" type="date" class="w-full border px-3 py-2 mb-3">
-        <button onclick="addNotice()"
-          class="bg-blue-700 text-white px-4 py-2 rounded">
+      <div class="bg-white p-4 rounded shadow max-w-md">
+        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Title" />
+        <textarea class="w-full border rounded px-3 py-2 mb-2" placeholder="Message"></textarea>
+        <button class="w-full bg-blue-600 text-white py-2 rounded">
           Add Announcement
         </button>
       </div>
-
-      <ul id="noticeList" class="mt-4 space-y-2"></ul>
     </section>
 
     <!-- EVENTS -->
     <section id="events">
-      <h2 class="text-2xl font-bold mb-4">Events</h2>
+      <h2 class="text-xl font-bold mb-4">Events</h2>
 
-      <div class="bg-white p-6 rounded-xl shadow max-w-xl">
-        <input id="eTitle" placeholder="Title" class="w-full border px-3 py-2 mb-2">
-        <textarea id="eDesc" placeholder="Description"
-          class="w-full border px-3 py-2 mb-2"></textarea>
-        <input id="eDate" type="date" class="w-full border px-3 py-2 mb-3">
-        <button onclick="addEvent()"
-          class="bg-blue-700 text-white px-4 py-2 rounded">
+      <div class="bg-white p-4 rounded shadow max-w-md">
+        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Event name" />
+        <input type="date" class="w-full border rounded px-3 py-2 mb-2" />
+        <button class="w-full bg-blue-600 text-white py-2 rounded">
           Add Event
         </button>
       </div>
-
-      <ul id="eventList" class="mt-4 space-y-2"></ul>
     </section>
 
   </main>
@@ -96,106 +89,30 @@
 <!-- FIREBASE -->
 <script type="module" src="js/firebase.js"></script>
 
-<!-- AUTH PROTECTION -->
+<!-- AUTH PROTECT + LOGOUT -->
 <script type="module">
   import { onAuthStateChanged, signOut } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
   import { auth } from "./js/firebase.js";
 
-  window.logout = () => signOut(auth);
-
   onAuthStateChanged(auth, user => {
-    if (!user) window.location.href = "login.html";
+    if (!user) {
+      window.location.href = "login.html";
+    }
   });
+
+  window.logout = function () {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    });
+  };
 </script>
 
-<!-- ADMIN LOGIC -->
-<script type="module">
-  import { db } from "./js/firebase.js";
-  import {
-    collection, addDoc, deleteDoc, doc, onSnapshot
-  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-  /* MEMBERS */
-  const membersRef = collection(db, "members");
-  const memberList = document.getElementById("memberList");
-
-  window.addMember = async () => {
-    await addDoc(membersRef, {
-      name: mName.value,
-      class: mClass.value,
-      position: mPosition.value
-    });
-    mName.value = mClass.value = mPosition.value = "";
-  };
-
-  onSnapshot(membersRef, snap => {
-    memberList.innerHTML = "";
-    snap.forEach(d => {
-      const m = d.data();
-      memberList.innerHTML += `
-        <li class="bg-white p-3 rounded shadow flex justify-between">
-          ${m.name} (${m.position})
-          <button onclick="deleteItem('members','${d.id}')"
-            class="text-red-600 text-sm">Delete</button>
-        </li>`;
-    });
-  });
-
-  /* NOTICES */
-  const noticesRef = collection(db, "notices");
-  const noticeList = document.getElementById("noticeList");
-
-  window.addNotice = async () => {
-    await addDoc(noticesRef, {
-      title: nTitle.value,
-      description: nDesc.value,
-      date: nDate.value
-    });
-    nTitle.value = nDesc.value = nDate.value = "";
-  };
-
-  onSnapshot(noticesRef, snap => {
-    noticeList.innerHTML = "";
-    snap.forEach(d => {
-      const n = d.data();
-      noticeList.innerHTML += `
-        <li class="bg-white p-3 rounded shadow flex justify-between">
-          ${n.title}
-          <button onclick="deleteItem('notices','${d.id}')"
-            class="text-red-600 text-sm">Delete</button>
-        </li>`;
-    });
-  });
-
-  /* EVENTS */
-  const eventsRef = collection(db, "events");
-  const eventList = document.getElementById("eventList");
-
-  window.addEvent = async () => {
-    await addDoc(eventsRef, {
-      title: eTitle.value,
-      description: eDesc.value,
-      date: eDate.value
-    });
-    eTitle.value = eDesc.value = eDate.value = "";
-  };
-
-  onSnapshot(eventsRef, snap => {
-    eventList.innerHTML = "";
-    snap.forEach(d => {
-      const e = d.data();
-      eventList.innerHTML += `
-        <li class="bg-white p-3 rounded shadow flex justify-between">
-          ${e.title}
-          <button onclick="deleteItem('events','${d.id}')"
-            class="text-red-600 text-sm">Delete</button>
-        </li>`;
-    });
-  });
-
-  window.deleteItem = async (col, id) =>
-    await deleteDoc(doc(db, col, id));
+<!-- UI SCRIPT -->
+<script>
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("-translate-x-full");
+  }
 </script>
 
 </body>
