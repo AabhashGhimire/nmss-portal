@@ -2,46 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Announcements | NMSS</title>
+  <title>Notice | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-slate-50">
+<body class="bg-slate-50 text-gray-800">
 
-<header class="bg-white shadow px-6 py-4">
-  <h1 class="text-xl font-bold text-blue-800">Announcements</h1>
+<!-- HEADER -->
+<header class="bg-white shadow sticky top-0 z-50">
+  <div class="max-w-5xl mx-auto px-4 py-4">
+    <h1 class="text-xl font-bold text-blue-800">Notices</h1>
+  </div>
 </header>
 
-<main class="max-w-4xl mx-auto px-6 py-10 space-y-4" id="announcementsList"></main>
+<!-- ANNOUNCEMENTS LIST -->
+<main class="max-w-5xl mx-auto px-4 py-8 space-y-4" id="noticeList">
+  <p class="text-gray-500">Loading notices...</p>
+</main>
 
-<script type="module" src="JS/firebase.js"></script>
+<!-- FIREBASE -->
+<script type="module" src="js/firebase.js"></script>
 
 <script type="module">
   import { db } from "./js/firebase.js";
-  import { collection, query, orderBy, onSnapshot } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import {
+    collection,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  const list = document.getElementById("announcementsList");
+  const list = document.getElementById("noticeList");
 
-  const q = query(
-    collection(db, "announcements"),
-    orderBy("createdAt", "desc")
-  );
-
-  onSnapshot(q, snap => {
+  onSnapshot(collection(db, "announcements"), snapshot => {
     list.innerHTML = "";
-    snap.forEach(doc => {
-      const a = doc.data();
-      const isNew = Date.now() - a.createdAt?.toMillis() < 86400000;
+
+    if (snapshot.empty) {
+      list.innerHTML = "<p class='text-gray-500'>No notices available.</p>";
+      return;
+    }
+
+    snapshot.forEach(doc => {
+      const n = doc.data();
+
+      // SAFE "new" badge logic
+      let isNew = false;
+      if (n.createdAt && n.createdAt.toMillis) {
+        isNew = Date.now() - n.createdAt.toMillis() < 86400000;
+      }
 
       list.innerHTML += `
         <div class="bg-white rounded-xl shadow p-5">
           <div class="flex items-center gap-2 mb-1">
-            <h3 class="font-semibold">${a.title}</h3>
+            <h3 class="font-semibold text-lg">
+              ${n.title || "Notice"}
+            </h3>
             ${isNew ? `<span class="text-xs bg-blue-600 text-white px-2 py-0.5 rounded">NEW</span>` : ""}
           </div>
-          <p class="text-sm text-gray-600">${a.message}</p>
+
+          <p class="text-sm text-gray-700">
+            ${n.message || ""}
+          </p>
         </div>
       `;
     });
