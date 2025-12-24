@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel | NMSS</title>
+  <title>NMSS Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
 
 <!-- TOP BAR (MOBILE) -->
-<header class="md:hidden bg-blue-800 text-white flex items-center justify-between px-4 py-3">
+<header class="md:hidden bg-blue-800 text-white flex justify-between items-center px-4 py-3">
   <span class="font-semibold">NMSS Admin</span>
   <button onclick="toggleSidebar()" class="text-2xl">☰</button>
 </header>
@@ -23,63 +21,70 @@
   <aside
     id="sidebar"
     class="fixed md:static inset-y-0 left-0 w-64 bg-blue-800 text-white p-6
-           transform -translate-x-full md:translate-x-0 transition-transform duration-200 z-50"
+           transform -translate-x-full md:translate-x-0 transition-transform z-50"
   >
     <h2 class="font-bold text-lg mb-6">NMSS Admin</h2>
 
-    <nav class="space-y-4 text-sm">
-      <a href="#members" class="block hover:underline">Members</a>
-      <a href="#announcements" class="block hover:underline">Announcements</a>
-      <a href="#events" class="block hover:underline">Events</a>
+    <nav class="space-y-3 text-sm">
+      <a href="#members">Members</a>
+      <a href="#teachers">Teachers</a>
+      <a href="#announcements">Announcements</a>
+      <a href="#events">Events</a>
     </nav>
 
     <button
       onclick="logout()"
-      class="mt-10 w-full bg-red-600 hover:bg-red-700 py-2 rounded"
+      class="mt-10 w-full bg-red-600 py-2 rounded"
     >
       Logout
     </button>
   </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 p-6 md:p-10 md:ml-0">
+  <!-- MAIN -->
+  <main class="flex-1 p-6 md:p-10 space-y-14">
 
     <!-- MEMBERS -->
-    <section id="members" class="mb-12">
-      <h2 class="text-xl font-bold mb-4">Members</h2>
-
+    <section id="members">
+      <h2 class="text-xl font-bold mb-4">Add Member</h2>
       <div class="bg-white p-4 rounded shadow max-w-md">
-        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Name" />
-        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Role" />
-        <button class="w-full bg-blue-600 text-white py-2 rounded">
-          Add Member
-        </button>
+        <input id="memberName" class="input" placeholder="Name" />
+        <input id="memberRole" class="input" placeholder="Role" />
+        <button onclick="addMember()" class="btn">Add Member</button>
+        <p id="memberStatus" class="status"></p>
+      </div>
+    </section>
+
+    <!-- TEACHERS -->
+    <section id="teachers">
+      <h2 class="text-xl font-bold mb-4">Add Teacher</h2>
+      <div class="bg-white p-4 rounded shadow max-w-md">
+        <input id="teacherName" class="input" placeholder="Name" />
+        <input id="teacherSubject" class="input" placeholder="Subject" />
+        <input id="teacherPost" class="input" placeholder="Post (HOD/Teacher)" />
+        <button onclick="addTeacher()" class="btn">Add Teacher</button>
+        <p id="teacherStatus" class="status"></p>
       </div>
     </section>
 
     <!-- ANNOUNCEMENTS -->
-    <section id="announcements" class="mb-12">
-      <h2 class="text-xl font-bold mb-4">Announcements</h2>
-
+    <section id="announcements">
+      <h2 class="text-xl font-bold mb-4">Add Announcement</h2>
       <div class="bg-white p-4 rounded shadow max-w-md">
-        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Title" />
-        <textarea class="w-full border rounded px-3 py-2 mb-2" placeholder="Message"></textarea>
-        <button class="w-full bg-blue-600 text-white py-2 rounded">
-          Add Announcement
-        </button>
+        <input id="announceTitle" class="input" placeholder="Title" />
+        <textarea id="announceMessage" class="input" placeholder="Message"></textarea>
+        <button onclick="addAnnouncement()" class="btn">Add Announcement</button>
+        <p id="announceStatus" class="status"></p>
       </div>
     </section>
 
     <!-- EVENTS -->
     <section id="events">
-      <h2 class="text-xl font-bold mb-4">Events</h2>
-
+      <h2 class="text-xl font-bold mb-4">Add Event</h2>
       <div class="bg-white p-4 rounded shadow max-w-md">
-        <input class="w-full border rounded px-3 py-2 mb-2" placeholder="Event name" />
-        <input type="date" class="w-full border rounded px-3 py-2 mb-2" />
-        <button class="w-full bg-blue-600 text-white py-2 rounded">
-          Add Event
-        </button>
+        <input id="eventName" class="input" placeholder="Event Name" />
+        <input id="eventDate" type="date" class="input" />
+        <button onclick="addEvent()" class="btn">Add Event</button>
+        <p id="eventStatus" class="status"></p>
       </div>
     </section>
 
@@ -89,31 +94,17 @@
 <!-- FIREBASE -->
 <script type="module" src="js/firebase.js"></script>
 
-<!-- AUTH PROTECT + LOGOUT -->
 <script type="module">
   import { onAuthStateChanged, signOut } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-  import { auth } from "./js/firebase.js";
+  import { collection, addDoc, serverTimestamp } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import { auth, db } from "./js/firebase.js";
 
   onAuthStateChanged(auth, user => {
-    if (!user) {
-      window.location.href = "login.html";
-    }
+    if (!user) location.href = "login.html";
   });
 
-  window.logout = function () {
-    signOut(auth).then(() => {
-      window.location.href = "login.html";
-    });
-  };
-</script>
+  window.logout = () => signOut(auth).then(() => location.href = "login.html");
 
-<!-- UI SCRIPT -->
-<script>
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("-translate-x-full");
-  }
-</script>
-
-</body>
-</html>
+  async function addData(col, data, statusEl
