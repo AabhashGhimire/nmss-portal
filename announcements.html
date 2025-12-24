@@ -50,17 +50,24 @@
   </div>
 </header>
 
-<!-- TITLE -->
-<section class="max-w-5xl mx-auto px-4 pt-10 pb-4">
-  <h1 class="text-3xl font-bold text-blue-800 mb-2">Notices</h1>
+<!-- PAGE TITLE (padding fixes scroll overlap) -->
+<section class="max-w-5xl mx-auto px-4 pt-[100px] pb-4">
+  <h1 class="text-3xl font-bold text-blue-800 mb-2">
+    Notices
+  </h1>
   <p class="text-gray-600">
     Official announcements from the NMSS Science Club.
   </p>
 </section>
 
 <!-- NOTICES LIST -->
-<main class="max-w-5xl mx-auto px-4 pb-16 space-y-4" id="noticeList">
-  <p class="text-gray-500">Loading notices...</p>
+<main
+  id="noticeList"
+  class="max-w-5xl mx-auto px-4 pb-20 space-y-4"
+>
+  <p class="text-gray-500 text-center">
+    Loading notices...
+  </p>
 </main>
 
 <!-- FIREBASE -->
@@ -88,6 +95,7 @@
     snapshot.forEach(doc => {
       const n = doc.data();
 
+      // NEW badge (24 hours)
       let isNew = false;
       if (n.createdAt && n.createdAt.toMillis) {
         isNew = Date.now() - n.createdAt.toMillis() < 86400000;
@@ -112,10 +120,10 @@
     });
   });
 
+  // Hamburger toggle
   function toggleMenu() {
     document.getElementById("menu").classList.toggle("hidden");
   }
-
   window.toggleMenu = toggleMenu;
 </script>
 
