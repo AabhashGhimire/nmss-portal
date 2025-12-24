@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Members | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -60,13 +59,11 @@
 <!-- FIREBASE -->
 <script type="module" src="js/firebase.js"></script>
 
-<!-- MEMBERS FETCH + FILTER -->
+<!-- MEMBERS LOGIC -->
 <script type="module">
   import { db } from "./js/firebase.js";
-  import {
-    collection,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import { collection, onSnapshot } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
   const grid = document.getElementById("membersGrid");
   const searchInput = document.getElementById("searchInput");
@@ -74,13 +71,9 @@
 
   let members = [];
 
-  // Load members from Firestore
-  const membersRef = collection(db, "members");
-  onSnapshot(membersRef, snapshot => {
-    members = [];
-    snapshot.forEach(doc => {
-      members.push(doc.data());
-    });
+  // Load members
+  onSnapshot(collection(db, "members"), snapshot => {
+    members = snapshot.docs.map(doc => doc.data());
     renderMembers();
   });
 
@@ -90,28 +83,28 @@
 
     grid.innerHTML = "";
 
-    members
-      .filter(m =>
-        m.name.toLowerCase().includes(search) &&
-        (role === "all" || m.position === role)
-      )
-      .forEach(m => {
-        grid.innerHTML += `
-          <div class="bg-white shadow rounded-xl p-6 text-center">
-            <h3 class="font-semibold text-lg">${m.name}</h3>
-            <p class="text-sm text-blue-700 font-medium">${m.position}</p>
-            <p class="text-sm text-gray-500">Class ${m.class}</p>
-          </div>
-        `;
-      });
+    const filtered = members.filter(m =>
+      m.name.toLowerCase().includes(search) &&
+      (role === "all" || m.role === role)
+    );
 
-    if (grid.innerHTML === "") {
+    if (filtered.length === 0) {
       grid.innerHTML = `
         <p class="text-gray-500 col-span-full text-center">
           No members found.
         </p>
       `;
+      return;
     }
+
+    filtered.forEach(m => {
+      grid.innerHTML += `
+        <div class="bg-white shadow rounded-xl p-6 text-center">
+          <h3 class="font-semibold text-lg">${m.name}</h3>
+          <p class="text-sm text-blue-700 font-medium">${m.role}</p>
+        </div>
+      `;
+    });
   }
 
   searchInput.addEventListener("input", renderMembers);
