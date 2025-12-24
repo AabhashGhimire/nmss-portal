@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NMSS Admin Panel</title>
+  <title>Admin Panel | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -53,8 +54,8 @@
     </button>
   </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 p-6 md:p-10 space-y-16">
+  <!-- MAIN -->
+  <main class="flex-1 p-6 md:p-10 space-y-20">
 
     <!-- STUDENTS -->
     <section id="students">
@@ -62,7 +63,8 @@
 
       <div class="bg-white p-4 rounded shadow max-w-md">
         <input id="studentName" class="input" placeholder="Student Name">
-        <input id="studentRole" class="input" placeholder="Role (President, Member)">
+        <input id="studentRole" class="input" placeholder="Role (President / Member)">
+        <input id="studentClass" class="input" placeholder="Class (9A, 10B, 9G)">
         <button class="btn" onclick="addStudent()">Add Student</button>
       </div>
 
@@ -108,28 +110,25 @@
         <input id="eventDate" type="date" class="input">
         <button class="btn" onclick="addEvent()">Add Event</button>
       </div>
+
+      <h3 class="font-semibold mt-6 mb-2">Manage Events</h3>
+      <div id="eventsList" class="space-y-2 max-w-md"></div>
     </section>
 
   </main>
 </div>
 
 <!-- FIREBASE -->
-<script type="module" src="JS/firebase.js"></script>
+<script type="module" src="js/firebase.js"></script>
 
 <script type="module">
   import { auth, db } from "./js/firebase.js";
   import { onAuthStateChanged, signOut } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
   import {
-    collection,
-    addDoc,
-    getDocs,
-    deleteDoc,
-    doc,
-    serverTimestamp
+    collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  /* AUTH PROTECT */
   onAuthStateChanged(auth, user => {
     if (!user) location.href = "login.html";
   });
@@ -140,18 +139,16 @@
   window.toggleMenu = () =>
     document.getElementById("sidebar").classList.toggle("-translate-x-full");
 
-  /* ---------- STUDENTS ---------- */
+  /* STUDENTS */
   window.addStudent = async () => {
-    if (!studentName.value || !studentRole.value)
-      return alert("Fill all fields");
-
+    if (!studentName.value || !studentRole.value || !studentClass.value) return;
     await addDoc(collection(db, "members"), {
       name: studentName.value,
       role: studentRole.value,
+      class: studentClass.value,
       createdAt: serverTimestamp()
     });
-
-    studentName.value = studentRole.value = "";
+    studentName.value = studentRole.value = studentClass.value = "";
     loadStudents();
   };
 
@@ -161,34 +158,26 @@
     snap.forEach(d => {
       const s = d.data();
       studentsList.innerHTML += `
-        <div class="flex justify-between items-center bg-white p-2 rounded shadow">
-          <span>${s.name} (${s.role})</span>
-          <button class="text-red-600 text-sm"
-            onclick="deleteStudent('${d.id}')">Delete</button>
+        <div class="bg-white p-2 rounded shadow flex justify-between">
+          <span>${s.name} • ${s.role} • Class ${s.class || ""}</span>
+          <button onclick="deleteStudent('${d.id}')" class="text-red-600 text-sm">Delete</button>
         </div>`;
     });
   }
 
-  window.deleteStudent = async (id) => {
-    if (!confirm("Delete student?")) return;
+  window.deleteStudent = async id => {
     await deleteDoc(doc(db, "members", id));
     loadStudents();
   };
 
-  loadStudents();
-
-  /* ---------- TEACHERS ---------- */
+  /* TEACHERS */
   window.addTeacher = async () => {
-    if (!teacherName.value || !teacherSubject.value || !teacherPost.value)
-      return alert("Fill all fields");
-
     await addDoc(collection(db, "teachers"), {
       name: teacherName.value,
       subject: teacherSubject.value,
       post: teacherPost.value,
       createdAt: serverTimestamp()
     });
-
     teacherName.value = teacherSubject.value = teacherPost.value = "";
     loadTeachers();
   };
@@ -199,33 +188,25 @@
     snap.forEach(d => {
       const t = d.data();
       teachersList.innerHTML += `
-        <div class="flex justify-between items-center bg-white p-2 rounded shadow">
-          <span>${t.name} (${t.subject})</span>
-          <button class="text-red-600 text-sm"
-            onclick="deleteTeacher('${d.id}')">Delete</button>
+        <div class="bg-white p-2 rounded shadow flex justify-between">
+          <span>${t.name} • ${t.subject} • ${t.post}</span>
+          <button onclick="deleteTeacher('${d.id}')" class="text-red-600 text-sm">Delete</button>
         </div>`;
     });
   }
 
-  window.deleteTeacher = async (id) => {
-    if (!confirm("Delete teacher?")) return;
+  window.deleteTeacher = async id => {
     await deleteDoc(doc(db, "teachers", id));
     loadTeachers();
   };
 
-  loadTeachers();
-
-  /* ---------- ANNOUNCEMENTS ---------- */
+  /* ANNOUNCEMENTS */
   window.addAnnouncement = async () => {
-    if (!announceTitle.value || !announceMessage.value)
-      return alert("Fill all fields");
-
     await addDoc(collection(db, "announcements"), {
       title: announceTitle.value,
       message: announceMessage.value,
       createdAt: serverTimestamp()
     });
-
     announceTitle.value = announceMessage.value = "";
     loadAnnouncements();
   };
@@ -236,35 +217,51 @@
     snap.forEach(d => {
       const a = d.data();
       announcementsList.innerHTML += `
-        <div class="flex justify-between items-center bg-white p-2 rounded shadow">
+        <div class="bg-white p-2 rounded shadow flex justify-between">
           <span>${a.title}</span>
-          <button class="text-red-600 text-sm"
-            onclick="deleteAnnouncement('${d.id}')">Delete</button>
+          <button onclick="deleteAnnouncement('${d.id}')" class="text-red-600 text-sm">Delete</button>
         </div>`;
     });
   }
 
-  window.deleteAnnouncement = async (id) => {
-    if (!confirm("Delete announcement?")) return;
+  window.deleteAnnouncement = async id => {
     await deleteDoc(doc(db, "announcements", id));
     loadAnnouncements();
   };
 
-  loadAnnouncements();
-
-  /* ---------- EVENTS ---------- */
+  /* EVENTS */
   window.addEvent = async () => {
-    if (!eventName.value || !eventDate.value)
-      return alert("Fill all fields");
-
     await addDoc(collection(db, "events"), {
       name: eventName.value,
       date: eventDate.value,
       createdAt: serverTimestamp()
     });
-
     eventName.value = eventDate.value = "";
+    loadEvents();
   };
+
+  async function loadEvents() {
+    eventsList.innerHTML = "";
+    const snap = await getDocs(collection(db, "events"));
+    snap.forEach(d => {
+      const e = d.data();
+      eventsList.innerHTML += `
+        <div class="bg-white p-2 rounded shadow flex justify-between">
+          <span>${e.name} (${e.date})</span>
+          <button onclick="deleteEvent('${d.id}')" class="text-red-600 text-sm">Delete</button>
+        </div>`;
+    });
+  }
+
+  window.deleteEvent = async id => {
+    await deleteDoc(doc(db, "events", id));
+    loadEvents();
+  };
+
+  loadStudents();
+  loadTeachers();
+  loadAnnouncements();
+  loadEvents();
 </script>
 
 </body>
