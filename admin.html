@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NMSS Admin Panel</title>
+  <title>NMSS Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -26,7 +26,7 @@
 
 <body class="bg-gray-100">
 
-<!-- TOP BAR -->
+<!-- TOP BAR (MOBILE) -->
 <header class="bg-blue-700 text-white flex justify-between items-center px-4 py-3 md:hidden">
   <span class="font-semibold">NMSS Admin</span>
   <button onclick="toggleMenu()">☰</button>
@@ -42,7 +42,7 @@
     <h2 class="font-bold text-lg mb-6">NMSS Admin</h2>
 
     <nav class="space-y-3 text-sm">
-      <a href="#members">Members</a>
+      <a href="#students">Students</a>
       <a href="#teachers">Teachers</a>
       <a href="#announcements">Announcements</a>
       <a href="#events">Events</a>
@@ -53,26 +53,27 @@
     </button>
   </aside>
 
-  <!-- MAIN -->
+  <!-- MAIN CONTENT -->
   <main class="flex-1 p-6 md:p-10 space-y-16">
 
-    <!-- MEMBERS -->
-    <section id="members">
-      <h2 class="text-xl font-bold mb-4">Add Member</h2>
+    <!-- STUDENTS -->
+    <section id="students">
+      <h2 class="text-xl font-bold mb-4">Add Student</h2>
 
       <div class="bg-white p-4 rounded shadow max-w-md">
-        <input id="memberName" class="input" placeholder="Member Name">
-        <input id="memberRole" class="input" placeholder="Role (President, Member)">
-        <button class="btn" onclick="addMember()">Add Member</button>
+        <input id="studentName" class="input" placeholder="Student Name">
+        <input id="studentRole" class="input" placeholder="Role (President, Member)">
+        <button class="btn" onclick="addStudent()">Add Student</button>
       </div>
 
-      <h3 class="font-semibold mt-6 mb-2">Manage Members</h3>
-      <div id="membersList" class="space-y-2 max-w-md"></div>
+      <h3 class="font-semibold mt-6 mb-2">Manage Students</h3>
+      <div id="studentsList" class="space-y-2 max-w-md"></div>
     </section>
 
     <!-- TEACHERS -->
     <section id="teachers">
       <h2 class="text-xl font-bold mb-4">Add Teacher</h2>
+
       <div class="bg-white p-4 rounded shadow max-w-md">
         <input id="teacherName" class="input" placeholder="Teacher Name">
         <input id="teacherSubject" class="input" placeholder="Subject">
@@ -84,6 +85,7 @@
     <!-- ANNOUNCEMENTS -->
     <section id="announcements">
       <h2 class="text-xl font-bold mb-4">Add Announcement</h2>
+
       <div class="bg-white p-4 rounded shadow max-w-md">
         <input id="announceTitle" class="input" placeholder="Title">
         <textarea id="announceMessage" class="input" placeholder="Message"></textarea>
@@ -94,6 +96,7 @@
     <!-- EVENTS -->
     <section id="events">
       <h2 class="text-xl font-bold mb-4">Add Event</h2>
+
       <div class="bg-white p-4 rounded shadow max-w-md">
         <input id="eventName" class="input" placeholder="Event Name">
         <input id="eventDate" type="date" class="input">
@@ -122,69 +125,75 @@
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  // Protect admin
+  // AUTH PROTECT
   onAuthStateChanged(auth, user => {
     if (!user) location.href = "login.html";
   });
 
-  window.logout = () => signOut(auth).then(() => location.href = "login.html");
+  window.logout = () =>
+    signOut(auth).then(() => location.href = "login.html");
 
-  window.toggleMenu = () => {
+  window.toggleMenu = () =>
     document.getElementById("sidebar").classList.toggle("-translate-x-full");
-  };
 
-  // MEMBERS
-  window.addMember = async () => {
-    const name = memberName.value.trim();
-    const role = memberRole.value.trim();
-    if (!name || !role) return alert("Fill all fields");
+  /* ---------- STUDENTS ---------- */
+  window.addStudent = async () => {
+    const name = studentName.value.trim();
+    const role = studentRole.value.trim();
+    if (!name || !role) return alert("Fill all student fields");
 
     await addDoc(collection(db, "members"), {
-      name, role, createdAt: serverTimestamp()
+      name,
+      role,
+      createdAt: serverTimestamp()
     });
 
-    memberName.value = "";
-    memberRole.value = "";
-    loadMembers();
+    studentName.value = "";
+    studentRole.value = "";
+    loadStudents();
   };
 
-  async function loadMembers() {
-    const list = document.getElementById("membersList");
+  async function loadStudents() {
+    const list = document.getElementById("studentsList");
     list.innerHTML = "";
     const snap = await getDocs(collection(db, "members"));
 
     snap.forEach(d => {
-      const m = d.data();
+      const s = d.data();
       list.innerHTML += `
         <div class="flex justify-between items-center bg-white p-2 rounded shadow">
-          <span>${m.name} (${m.role})</span>
+          <span>${s.name} (${s.role})</span>
           <button class="text-red-600 text-sm"
-            onclick="deleteMember('${d.id}')">Delete</button>
+            onclick="deleteStudent('${d.id}')">Delete</button>
         </div>
       `;
     });
   }
 
-  window.deleteMember = async (id) => {
-    if (!confirm("Delete member?")) return;
+  window.deleteStudent = async (id) => {
+    if (!confirm("Delete student?")) return;
     await deleteDoc(doc(db, "members", id));
-    loadMembers();
+    loadStudents();
   };
 
-  loadMembers();
+  loadStudents();
 
-  // TEACHERS
+  /* ---------- TEACHERS ---------- */
   window.addTeacher = async () => {
+    const name = teacherName.value.trim();
+    const subject = teacherSubject.value.trim();
+    const post = teacherPost.value.trim();
+    if (!name || !subject || !post) return alert("Fill all teacher fields");
+
     await addDoc(collection(db, "teachers"), {
-      name: teacherName.value,
-      subject: teacherSubject.value,
-      post: teacherPost.value,
-      createdAt: serverTimestamp()
+      name, subject, post, createdAt: serverTimestamp()
     });
+
     teacherName.value = teacherSubject.value = teacherPost.value = "";
+    alert("Teacher added");
   };
 
-  // ANNOUNCEMENTS
+  /* ---------- ANNOUNCEMENTS ---------- */
   window.addAnnouncement = async () => {
     await addDoc(collection(db, "announcements"), {
       title: announceTitle.value,
@@ -192,9 +201,10 @@
       createdAt: serverTimestamp()
     });
     announceTitle.value = announceMessage.value = "";
+    alert("Announcement added");
   };
 
-  // EVENTS
+  /* ---------- EVENTS ---------- */
   window.addEvent = async () => {
     await addDoc(collection(db, "events"), {
       name: eventName.value,
@@ -202,6 +212,7 @@
       createdAt: serverTimestamp()
     });
     eventName.value = eventDate.value = "";
+    alert("Event added");
   };
 </script>
 
