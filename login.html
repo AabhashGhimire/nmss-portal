@@ -1,15 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Admin Login | NMSS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 text-gray-800">
 
+<!-- HEADER -->
+<header class="bg-white border-b sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+
+    <!-- LOGO -->
+    <div class="flex items-center gap-3">
+      <img src="assets/images/nmss-logo.png" alt="NMSS" class="w-10 h-10">
+      <span class="font-bold text-blue-800 text-lg">NMSS</span>
+    </div>
+
+    <!-- HAMBURGER -->
+    <button
+      onclick="toggleMenu()"
+      class="md:hidden text-2xl font-bold"
+      aria-label="Menu"
+    >
+      ☰
+    </button>
+
+    <!-- DESKTOP MENU -->
+    <nav class="hidden md:flex gap-5 text-sm font-medium">
+      <a href="index.html">Home</a>
+      <a href="students.html">Members</a>
+      <a href="teachers.html">Teachers</a>
+      <a href="announcements.html">Notice</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+    </nav>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="menu" class="hidden md:hidden border-t bg-white px-4 py-3">
+    <nav class="flex flex-col gap-2 text-sm">
+      <a href="index.html">Home</a>
+      <a href="students.html">Members</a>
+      <a href="teachers.html">Teachers</a>
+      <a href="announcements.html">Notice</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+    </nav>
+  </div>
+</header>
+
+<!-- LOGIN CARD -->
+<main class="flex items-center justify-center min-h-[calc(100vh-72px)] px-4">
   <div class="bg-white p-8 rounded-xl shadow w-full max-w-sm">
     <h2 class="text-2xl font-bold mb-6 text-center text-blue-800">
       Admin Login
@@ -20,47 +66,55 @@
       id="email"
       placeholder="Admin email"
       class="w-full border rounded px-4 py-2 mb-4"
-    >
+    />
 
     <input
       type="password"
       id="password"
       placeholder="Password"
       class="w-full border rounded px-4 py-2 mb-4"
-    >
+    />
 
     <button
       onclick="login()"
-      class="w-full bg-blue-700 text-white py-2 rounded"
+      class="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800"
     >
       Login
     </button>
 
     <p id="error" class="text-red-500 text-sm mt-4 text-center"></p>
   </div>
+</main>
 
-  <!-- Firebase -->
-  <script type="module" src="js/firebase.js"></script>
+<!-- FIREBASE -->
+<script type="module" src="js/firebase.js"></script>
 
-  <!-- Login Logic -->
-  <script type="module">
-    import { signInWithEmailAndPassword } from
-      "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-    import { auth } from "./js/firebase.js";
+<!-- LOGIN LOGIC -->
+<script type="module">
+  import { signInWithEmailAndPassword } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { auth } from "./js/firebase.js";
 
-    window.login = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  window.login = function () {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          window.location.href = "admin.html";
-        })
-        .catch(err => {
-          document.getElementById("error").innerText = err.message;
-        });
-    };
-  </script>
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        window.location.href = "admin.html";
+      })
+      .catch(err => {
+        document.getElementById("error").innerText = err.message;
+      });
+  };
+</script>
+
+<!-- UI SCRIPT -->
+<script>
+  function toggleMenu() {
+    document.getElementById("menu").classList.toggle("hidden");
+  }
+</script>
 
 </body>
 </html>
