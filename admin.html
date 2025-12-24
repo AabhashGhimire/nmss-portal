@@ -2,94 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NMSS Admin Panel</title>
+  <title>NMSS Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .input {
+      @apply w-full border rounded px-4 py-2 mb-3;
+    }
+    .btn {
+      @apply w-full bg-blue-700 text-white py-2 rounded;
+    }
+    .status {
+      @apply text-sm mt-2;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100">
 
-<!-- TOP BAR (MOBILE) -->
-<header class="md:hidden bg-blue-800 text-white flex justify-between items-center px-4 py-3">
+<!-- TOP BAR -->
+<header class="bg-blue-800 text-white flex justify-between items-center px-4 py-3">
   <span class="font-semibold">NMSS Admin</span>
-  <button onclick="toggleSidebar()" class="text-2xl">☰</button>
+  <button onclick="toggleMenu()" class="text-2xl">☰</button>
 </header>
 
-<div class="flex min-h-screen">
-
-  <!-- SIDEBAR -->
-  <aside
-    id="sidebar"
-    class="fixed md:static inset-y-0 left-0 w-64 bg-blue-800 text-white p-6
-           transform -translate-x-full md:translate-x-0 transition-transform z-50"
-  >
-    <h2 class="font-bold text-lg mb-6">NMSS Admin</h2>
-
-    <nav class="space-y-3 text-sm">
-      <a href="#members">Members</a>
-      <a href="#teachers">Teachers</a>
-      <a href="#announcements">Announcements</a>
-      <a href="#events">Events</a>
-    </nav>
-
-    <button
-      onclick="logout()"
-      class="mt-10 w-full bg-red-600 py-2 rounded"
-    >
-      Logout
-    </button>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="flex-1 p-6 md:p-10 space-y-14">
-
-    <!-- MEMBERS -->
-    <section id="members">
-      <h2 class="text-xl font-bold mb-4">Add Member</h2>
-      <div class="bg-white p-4 rounded shadow max-w-md">
-        <input id="memberName" class="input" placeholder="Name" />
-        <input id="memberRole" class="input" placeholder="Role" />
-        <button onclick="addMember()" class="btn">Add Member</button>
-        <p id="memberStatus" class="status"></p>
-      </div>
-    </section>
-
-    <!-- TEACHERS -->
-    <section id="teachers">
-      <h2 class="text-xl font-bold mb-4">Add Teacher</h2>
-      <div class="bg-white p-4 rounded shadow max-w-md">
-        <input id="teacherName" class="input" placeholder="Name" />
-        <input id="teacherSubject" class="input" placeholder="Subject" />
-        <input id="teacherPost" class="input" placeholder="Post (HOD/Teacher)" />
-        <button onclick="addTeacher()" class="btn">Add Teacher</button>
-        <p id="teacherStatus" class="status"></p>
-      </div>
-    </section>
-
-    <!-- ANNOUNCEMENTS -->
-    <section id="announcements">
-      <h2 class="text-xl font-bold mb-4">Add Announcement</h2>
-      <div class="bg-white p-4 rounded shadow max-w-md">
-        <input id="announceTitle" class="input" placeholder="Title" />
-        <textarea id="announceMessage" class="input" placeholder="Message"></textarea>
-        <button onclick="addAnnouncement()" class="btn">Add Announcement</button>
-        <p id="announceStatus" class="status"></p>
-      </div>
-    </section>
-
-    <!-- EVENTS -->
-    <section id="events">
-      <h2 class="text-xl font-bold mb-4">Add Event</h2>
-      <div class="bg-white p-4 rounded shadow max-w-md">
-        <input id="eventName" class="input" placeholder="Event Name" />
-        <input id="eventDate" type="date" class="input" />
-        <button onclick="addEvent()" class="btn">Add Event</button>
-        <p id="eventStatus" class="status"></p>
-      </div>
-    </section>
-
-  </main>
+<!-- SIDEBAR -->
+<div id="menu" class="hidden bg-blue-900 text-white px-6 py-4 space-y-3">
+  <a href="#members" class="block">Members</a>
+  <a href="#teachers" class="block">Teachers</a>
+  <a href="#announcements" class="block">Announcements</a>
+  <a href="#events" class="block">Events</a>
+  <button onclick="logout()" class="bg-red-600 w-full py-2 rounded mt-4">
+    Logout
+  </button>
 </div>
+
+<main class="p-6 space-y-12">
+
+<!-- MEMBERS -->
+<section id="members">
+  <h2 class="text-xl font-bold mb-3">Add Member</h2>
+  <div class="bg-white p-4 rounded shadow">
+    <input id="memberName" class="input" placeholder="Name">
+    <input id="memberRole" class="input" placeholder="Role">
+    <button class="btn" onclick="addMember()">Add Member</button>
+    <p id="memberStatus" class="status"></p>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section id="teachers">
+  <h2 class="text-xl font-bold mb-3">Add Teacher</h2>
+  <div class="bg-white p-4 rounded shadow">
+    <input id="teacherName" class="input" placeholder="Name">
+    <input id="teacherSubject" class="input" placeholder="Subject">
+    <input id="teacherPost" class="input" placeholder="Post (HOD/Teacher)">
+    <button class="btn" onclick="addTeacher()">Add Teacher</button>
+    <p id="teacherStatus" class="status"></p>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENTS -->
+<section id="announcements">
+  <h2 class="text-xl font-bold mb-3">Add Announcement</h2>
+  <div class="bg-white p-4 rounded shadow">
+    <input id="announceTitle" class="input" placeholder="Title">
+    <textarea id="announceMessage" class="input" placeholder="Message"></textarea>
+    <button class="btn" onclick="addAnnouncement()">Add Announcement</button>
+    <p id="announceStatus" class="status"></p>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <h2 class="text-xl font-bold mb-3">Add Event</h2>
+  <div class="bg-white p-4 rounded shadow">
+    <input id="eventName" class="input" placeholder="Event Name">
+    <input id="eventDate" type="date" class="input">
+    <button class="btn" onclick="addEvent()">Add Event</button>
+    <p id="eventStatus" class="status"></p>
+  </div>
+</section>
+
+</main>
 
 <!-- FIREBASE -->
 <script type="module" src="js/firebase.js"></script>
@@ -107,4 +103,46 @@
 
   window.logout = () => signOut(auth).then(() => location.href = "login.html");
 
-  async function addData(col, data, statusEl
+  window.toggleMenu = () =>
+    document.getElementById("menu").classList.toggle("hidden");
+
+  async function save(col, data, statusId) {
+    try {
+      await addDoc(collection(db, col), {
+        ...data,
+        createdAt: serverTimestamp()
+      });
+      document.getElementById(statusId).innerText = "Saved successfully";
+    } catch (e) {
+      document.getElementById(statusId).innerText = e.message;
+    }
+  }
+
+  window.addMember = () =>
+    save("members", {
+      name: memberName.value,
+      role: memberRole.value
+    }, "memberStatus");
+
+  window.addTeacher = () =>
+    save("teachers", {
+      name: teacherName.value,
+      subject: teacherSubject.value,
+      post: teacherPost.value
+    }, "teacherStatus");
+
+  window.addAnnouncement = () =>
+    save("announcements", {
+      title: announceTitle.value,
+      message: announceMessage.value
+    }, "announceStatus");
+
+  window.addEvent = () =>
+    save("events", {
+      name: eventName.value,
+      date: eventDate.value
+    }, "eventStatus");
+</script>
+
+</body>
+</html>
