@@ -5,7 +5,7 @@
   <title>Gallery | NMSS Science Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Font -->
@@ -29,22 +29,44 @@
 </header>
 
 <!-- TITLE -->
-<section class="max-w-6xl mx-auto px-6 pt-16 pb-6">
+<section class="max-w-6xl mx-auto px-6 pt-16 pb-6 text-center">
   <h2 class="text-3xl font-bold text-blue-800 mb-2">
     Gallery
   </h2>
-  <p class="text-gray-600">
-    Moments and activities from the NMSS Science Club.
+  <p class="text-gray-600 max-w-2xl mx-auto">
+    Moments from science exhibitions and activities conducted by the
+    NMSS Science Club.
   </p>
 </section>
 
-<!-- GALLERY GRID -->
-<main class="max-w-7xl mx-auto px-6 pb-20">
-  <div id="galleryGrid"
-       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-    <p class="text-gray-500 col-span-full">
-      Loading gallery...
-    </p>
+<!-- GALLERY -->
+<main class="max-w-6xl mx-auto px-6 pb-20">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    <!-- Image 1 -->
+    <div class="overflow-hidden rounded-xl shadow">
+      <img
+        src="assets/images/gallery/science_fair_1.jpg"
+        alt="Science Exhibition"
+        class="w-full h-72 object-cover hover:scale-105 transition duration-300"
+      >
+      <div class="p-3 text-sm text-gray-600 text-center">
+        Science Exhibition Project Display
+      </div>
+    </div>
+
+    <!-- Image 2 -->
+    <div class="overflow-hidden rounded-xl shadow">
+      <img
+        src="assets/images/gallery/science_fair_2.jpg"
+        alt="Science Fair"
+        class="w-full h-72 object-cover hover:scale-105 transition duration-300"
+      >
+      <div class="p-3 text-sm text-gray-600 text-center">
+        Students Presenting Science Models
+      </div>
+    </div>
+
   </div>
 </main>
 
@@ -52,55 +74,6 @@
 <footer class="text-center text-sm text-gray-400 py-6">
   © 2025 Narayani Model Secondary School
 </footer>
-
-<!-- FIREBASE -->
-<script type="module" src="js/firebase.js"></script>
-
-<!-- LOAD GALLERY -->
-<script type="module">
-  import { db } from "./js/firebase.js";
-  import {
-    collection,
-    onSnapshot,
-    query,
-    orderBy
-  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-  const galleryGrid = document.getElementById("galleryGrid");
-  const galleryRef = collection(db, "gallery");
-  const q = query(galleryRef, orderBy("createdAt", "desc"));
-
-  onSnapshot(q, snapshot => {
-    galleryGrid.innerHTML = "";
-
-    if (snapshot.empty) {
-      galleryGrid.innerHTML = `
-        <p class="text-gray-500 col-span-full">
-          No images available yet.
-        </p>
-      `;
-      return;
-    }
-
-    snapshot.forEach(doc => {
-      const g = doc.data();
-
-      galleryGrid.innerHTML += `
-        <div class="overflow-hidden rounded-lg shadow">
-          <img
-            src="${g.imageUrl}"
-            alt="Gallery image"
-            class="w-full h-48 object-cover hover:scale-105 transition"
-          >
-          ${g.caption ? `
-            <div class="p-2 text-sm text-gray-600">
-              ${g.caption}
-            </div>` : ``}
-        </div>
-      `;
-    });
-  });
-</script>
 
 </body>
 </html>
